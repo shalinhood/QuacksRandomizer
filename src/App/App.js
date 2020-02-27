@@ -106,7 +106,7 @@ const snakeWitchDesc = [
     "End of Round \n At the end of the turn, the price for moving a droplet and filling the flask is 1 ruby each (cannot be used to buy victory points)."
 ];
 
-const cards = {
+const allCards = {
     pumpkin: {
         descriptions: pumpkinDesc,
         index: 0
@@ -156,17 +156,87 @@ const cards = {
 const App = kind({
     name: 'App',
 
+    propTypes: {
+        onEnableExpansion: PropTypes.func,
+        expansion: PropTypes.bool,
+        onSetPlayerCount: PropTypes.func,
+        selectedPlayerCount: PropTypes.number,
+        onSelectSet: PropTypes.func,
+        activeSet: PropTypes.number,
+        onToggleTheme: PropTypes.func,
+        lightModeActive: PropTypes.bool,
+        cards: PropTypes.object,
+        onRandomizeIndividual: PropTypes.func,
+        onRandomizeAll: PropTypes.func,
+    },
+
+    defaultProps: {
+        expansion: true,
+        selectedPlayerCount: 0,
+        activeSet: null,
+        lightModeActive: false,
+        cards: allCards
+    },
+
     styles: {
         css,
         className: 'app'
     },
 
     handlers: {
+        onEnableExpansion: (ev, {onEnableExpansion}) => {
+            if (onEnableExpansion) {
+                onEnableExpansion({
+                    expansion: !ev.expansion
+                });
+            }
+        },
 
+        onSetPlayerCount: (ev, {onSetPlayerCount}) => {
+            if (onSetPlayerCount) {
+                if (ev.children === '2 Players') {
+                    onEnableExpansion({
+                        selectedPlayerCount: 0
+                    })
+                }
+                if (ev.children === '3,4,5 Players') {
+                    onEnableExpansion({
+                        selectedPlayerCount: 1
+                    })
+                }
+            }
+        },
+
+        onSelectSet: (ev, {onSelectSet}) => {
+            if (onSelectSet) {
+                switch (ev.children) {
+                    case '1':
+                        onSelectSet({activeSet: 0});
+                        break;
+                    case '2':
+                        onSelectSet({activeSet: 1});
+                        break;
+                    case '3':
+                        onSelectSet({activeSet: 2});
+                        break;
+                    case '4':
+                        onSelectSet({activeSet: 3});
+                        break;
+                    case '5':
+                        onSelectSet({activeSet: 4});
+                        break;
+                    case '6':
+                        onSelectSet({activeSet: 5});
+                        break;
+                    default:
+                        onSelectSet({activeSet: null});
+                }
+            }
+        }
     },
 
     render: (props) => (
-        <div {...props}>
+        <div>
             {/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
             <script src="/__/firebase/7.8.1/firebase-app.js"></script>
 
@@ -177,7 +247,7 @@ const App = kind({
             <script src="/__/firebase/init.js"></script>
 
             <Panels>
-                <MainPanel />
+                <MainPanel {...props}/>
             </Panels>
         </div>
     )

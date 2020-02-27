@@ -10,6 +10,8 @@ import ToggleItem from '@enact/moonstone/ToggleItem';
 import Changeable from '@enact/ui/Changeable';
 import Group from '@enact/ui/Group';
 import Checkbox from '@enact/moonstone/Checkbox';
+import Switch from '@enact/moonstone/Switch';
+import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
 
 const MainPanel = kind({
     name: 'MainPanel',
@@ -18,31 +20,46 @@ const MainPanel = kind({
         onEnableExpansion: PropTypes.func,
         expansion: PropTypes.bool,
         onSetPlayerCount: PropTypes.func,
+        selectedPlayerCount: PropTypes.number,
         onSelectSet: PropTypes.func,
+        activeSet: PropTypes.number,
+        onToggleTheme: PropTypes.func,
+        lightModeActive: PropTypes.bool,
         cards: PropTypes.object,
         onRandomizeIndividual: PropTypes.func,
         onRandomizeAll: PropTypes.func,
     },
 
     handlers: {
+        // Lets App know if the toggle is pressed and flips whether or not expansion material is included
         onEnableExpansion: (ev, {expansion, onEnableExpansion}) => {
             if (onEnableExpansion) {
                 onEnableExpansion({expansion});
             }
         },
 
+        // Lets App know the player count (effects African Death's Head Moth)
         onSetPlayerCount: (ev, {children, onSetPlayerCount}) => {
             if (onSetPlayerCount) {
                 onSetPlayerCount({children});
             }
         },
 
+        // Lets App know the slider was toggled to switch themes
+        onToggleTheme: (ev, {lightModeActive, onToggleTheme}) => {
+            if (onToggleTheme) {
+                onToggleTheme({lightModeActive});
+            }
+        },
+
+        // Lets App know if a set is selected
         onSelectSet: (ev, {children, onSelectSet}) => {
             if (onSelectSet) {
                 onSelectSet({children});
             }
         },
 
+        // Lets App know the button was pressed and changes the index for all the cards
         onRandomizeAll: (ev, {onRandomizeAll}) => {
             if (onRandomizeAll) {
                 onRandomizeAll();
@@ -50,27 +67,27 @@ const MainPanel = kind({
         }
     },
 
-    render: ({onEnableExpansion, onSetPlayerCount, onSelectSet, cards, onRandomizeIndividual, onRandomizeAll, ...rest}) => (
+    render: ({onEnableExpansion, expansion, onSetPlayerCount, selectedPlayerCount, onSelectSet, activeSet, onToggleTheme, lightModeActive, cards, onRandomizeIndividual, onRandomizeAll, ...rest}) => (
         <fieldset>
-            <Layout>
+            <Layout {...rest}>
                 <Row>
-                    <Cell><ToggleItem iconComponent={Checkbox} onToggle={onEnableExpansion}>The Herb Witches</ToggleItem></Cell>
+                    <Cell><ToggleItem iconComponent={Checkbox} onToggle={onEnableExpansion} selected={expansion}>The Herb Witches</ToggleItem></Cell>
                     <Cell>
-                        <Group childComponent={RadioItem} select="radio" onSelect={onSetPlayerCount}>
+                        <Group childComponent={RadioItem} select="radio" onSelect={onSetPlayerCount} selected={selectedPlayerCount}>
                             {[
                                 {children: '2 Players'},
                                 {children: '3,4,5 Players'}
                             ]}
                         </Group>
                     </Cell>
-                    <Cell>Dark/Light Mode</Cell>
+                    <Cell><Switch onToggle={onToggleTheme} selected={lightModeActive}>Dark/Light Mode</Switch></Cell>
                 </Row>
                 <Row>
                     <Cell>
                         <Column>
                         <Cell component="header"><h1>Ingredient Sets</h1></Cell>
                         <Cell>
-                            <Group childComponent={Button} select="radio" onSelect={onSelectSet}>
+                            <Group childComponent={Button} select="radio" onSelect={onSelectSet} selected={activeSet}>
                                 {[
                                     {children: '1'},
                                     {children: '2'},
@@ -126,4 +143,14 @@ const MainPanel = kind({
     )
 });
 
-export default Changeable({prop: 'cards', change:'onRandomizeAll'}, MainPanel);
+export default Changeable({prop: 'cards', change:'onRandomizeAll'}, 
+    Changeable({prop: 'lightModeActive', change: 'onToggleTheme'},
+        Changeable({prop: 'activeSet', change:'onSelectSet'},
+            Changeable({prop: 'selectedPlayerCount', change: 'onSetPlayerCount'},
+                Changeable({prop: 'expansion', change: 'onEnableExpansion'},
+                    MoonstoneDecorator(MainPanel)
+                )
+            )
+        )
+    )
+);

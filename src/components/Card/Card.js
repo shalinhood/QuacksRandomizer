@@ -4,6 +4,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Changeable from '@enact/ui/Changeable';
 
+const names = {
+    "pumpkin": "Pumpkin",
+    "crowSkull": "Crow Skull",
+    "toadstool": "Toadstool",
+    "mandrake": "Mandrake",
+    "locoweed": "Locoweed",
+    "gardenSpider": "Garden Spider",
+    "ghostsBreath": "Ghost's Breath",
+    "africanDeathsHeadHawkmoth": "African Death's Head Hawkmoth",
+    "snakeWitch": "Snake Witch",
+    "catWitch": "Cat Witch",
+    "owlWitch": "Owl Witch"
+};
+
 const CardBase = kind({
     name: "Card",
 
@@ -20,6 +34,7 @@ const CardBase = kind({
     },
 
     handlers: {
+        // Sends the name to App so that it can send the new index
         onRandomize: (ev, {name, onRandomize}) => {
             if (onRandomize) {
                 onRandomize({name});
@@ -28,13 +43,14 @@ const CardBase = kind({
     },
 
     computer: {
+        // Appends the name to the className so that the background color can be set
         className: ({name, styler}) => styler.append({name})
     },
 
     render: ({name, descriptions, onRandomize, ...rest}) => {
         return (
             <div {...rest}>
-                <h1>{name}</h1>
+                <h1>names[{name}]</h1>
                 <br/>
                 {descriptions[index]}
                 <IconButton onClick={onRandomize} size="small">
