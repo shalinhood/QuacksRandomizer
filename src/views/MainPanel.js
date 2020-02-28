@@ -85,11 +85,12 @@ const MainPanel = kind({
 		)
 
 		// Lets App know the button was pressed and changes the index for all the cards
-		// onRandomizeAll: (ev, {onRandomizeAll}) => {
-		// 	if (onRandomizeAll) {
-		// 		onRandomizeAll();
-		// 	}
-		// }
+		// onRandomizeAll: handle(
+		// 	adaptEvent(
+		// 		(ev, props) => (ev),
+		// 		forward('onRandomizeAll')
+		// 	)
+		// )
 	},
 
 	render: ({
@@ -106,8 +107,6 @@ const MainPanel = kind({
 		selectedPlayerCount,
 		...rest
 	}) => {
-		delete rest.onRandomizeIndividual;
-
 		return (
 			<Panel {...rest}>
 				<Column>
@@ -146,25 +145,25 @@ const MainPanel = kind({
 									<Column>
 										<Cell shrink>
 											<Row>
-												<Cell className={css.card}><Card name="toadstool" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="crowSkull" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="mandrake" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="locoweed" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="toadstool" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="crowSkull" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="mandrake" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="locoweed" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
 											</Row>
 										</Cell>
 										<Cell shrink>
 											<Row>
-												<Cell className={css.card}><Card name="gardenSpider" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="africanDeathsHeadHawkmoth" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="ghostsBreath" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="pumpkin" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="gardenSpider" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="africanDeathsHeadHawkmoth" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="ghostsBreath" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="pumpkin" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
 											</Row>
 										</Cell>
 										<Cell shrink>
 											<Row>
-												<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
 											</Row>
 										</Cell>
 									</Column>

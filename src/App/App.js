@@ -40,7 +40,6 @@ const App = kind({
 		activeSet: 1,
 		cards,
 		expansion: true,
-		lightModeActive: false,
 		selectedPlayerCount: 0
 	},
 
@@ -101,6 +100,8 @@ const App = kind({
 		selectedPlayerCount,
 		...rest
 	}) => {
+		// const skin = (skin ? 'light' : 'dark');
+
 		return (
 			<React.Fragment>
 				{/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
@@ -115,17 +116,17 @@ const App = kind({
 				<Panels {...rest}>
 					<MainPanel
 						{...{
-							cards: randomizedCards,
-							lightModeActive,
 							activeSet,
-							selectedPlayerCount,
+							cards: randomizedCards,
 							expansion,
+							lightModeActive,
+							onEnableExpansion,
 							onRandomizeAll,
 							onRandomizeIndividual,
-							onToggleTheme,
 							onSelectSet,
 							onSetPlayerCount,
-							onEnableExpansion
+							onToggleTheme,
+							selectedPlayerCount
 						}}
 					/>
 				</Panels>
@@ -138,9 +139,23 @@ const AppDecorator = compose(
 	MoonstoneDecorator,
 	Changeable({prop: 'activeSet', change: 'onSelectSet'}),
 	Changeable({prop: 'cards', change: 'onRandomizeAll'}),
+	Changeable({prop: 'cards', change: 'onRandomizeIndividual'}),
 	Changeable({prop: 'expansion', change: 'onEnableExpansion'}),
-	Changeable({prop: 'lightModeActive', change: 'onToggleTheme'}),
 	Changeable({prop: 'selectedPlayerCount', change: 'onSetPlayerCount'})
 );
 
-export default AppDecorator(App);
+
+// Set up the main App with the majority of the functionality
+const DecoratedApp = AppDecorator(App);
+
+// Set up an instance of DecoratedApp with some logic to apply the skin prop, which is what
+// MoonstoneDecorator needs to apply the skin. This reads the props set by Changeable below
+// and sets the "skin" prop on the DecoratedApp.
+//
+// eslint-disable-next-line enact/prop-types
+const SkinCapableApp = (props) => <DecoratedApp skin={props.lightModeActive ? 'light' : 'dark'} {...props} />;
+
+// Set up a Changeable wrapper to handle the state of the `lightModeActive` prop and the `onToggleTheme` callback.
+const SkinnedApp = Changeable({prop: 'lightModeActive', change: 'onToggleTheme'}, SkinCapableApp);
+
+export default SkinnedApp;
