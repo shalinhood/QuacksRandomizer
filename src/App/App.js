@@ -1,9 +1,12 @@
 import kind from '@enact/core/kind';
-import {handle, forward, adaptEvent} from '@enact/core/handle';
+import {handle, forward, log} from '@enact/core/handle';
 import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
 import Panels from '@enact/moonstone/Panels';
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'ramda/src/compose';
+import Changeable from '@enact/ui/Changeable';
+
 import MainPanel from '../views/MainPanel';
 
 import css from './App.module.less';
@@ -17,99 +20,127 @@ import cards from './cards.json';
 // ];
 
 const App = kind({
-    name: 'App',
+	name: 'App',
 
-    PropTypes: {
-        onEnableExpansion: PropTypes.func,
-        expansion: PropTypes.bool,
-        onSetPlayerCount: PropTypes.func,
-        selectedPlayerCount: PropTypes.number,
-        onSelectSet: PropTypes.func,
-        activeSet: PropTypes.number,
-        onToggleTheme: PropTypes.func,
-        lightModeActive: PropTypes.bool,
-        cards: PropTypes.object,
-        onRandomizeIndividual: PropTypes.func,
-        onRandomizeAll: PropTypes.func,
-    },
+	propTypes: {
+		activeSet: PropTypes.number,
+		cards: PropTypes.object,
+		expansion: PropTypes.bool,
+		lightModeActive: PropTypes.bool,
+		onEnableExpansion: PropTypes.func,
+		onRandomizeAll: PropTypes.func,
+		onRandomizeIndividual: PropTypes.func,
+		onSelectSet: PropTypes.func,
+		onSetPlayerCount: PropTypes.func,
+		onToggleTheme: PropTypes.func,
+		selectedPlayerCount: PropTypes.number
+	},
 
-    defaultProps: {
-        expansion: true,
-        selectedPlayerCount: 0,
-        activeSet: null,
-        lightModeActive: false,
-        cards
-    },
+	defaultProps: {
+		activeSet: 1,
+		cards,
+		expansion: true,
+		lightModeActive: false,
+		selectedPlayerCount: 0
+	},
 
-    styles: {
-        css,
-        className: 'app'
-    },
+	styles: {
+		css,
+		className: 'app' // 'app debug layout'
+	},
 
-    handlers: {
-        onEnableExpansion: handle(
-            adaptEvent(
-                ({expansion}) => ({
-                    expansion: !expansion
-                }),
-                forward('onEnableExpansion')
-            )
-        ),
+	handlers: {
+		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		onEnableExpansion: handle(
+			log('onEnableExpansion'),
+			forward('onEnableExpansion')
+		),
 
-        onSetPlayerCount: (ev, {onSetPlayerCount}) => {
-            if (onSetPlayerCount) {
-                if (ev.children === '2 Players') {
-                    onSetPlayerCount({
-                        selectedPlayerCount: 0
-                    })
-                }
-                if (ev.children === '3,4,5 Players') {
-                    onSetPlayerCount({
-                        selectedPlayerCount: 1
-                    })
-                }
-            }
-        },
+		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		onSetPlayerCount: handle(
+			log('onSetPlayerCount'),
+			forward('onSetPlayerCount')
+		),
 
-        onSelectSet: handle(
-            adaptEvent(
-                ({children}) => ({
-                    activeSet: (children ? (parseInt(children) - 1) : null)
-                }),
-                forward('onSelectSet')
-            )
-        ),
+		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		onSelectSet: handle(
+			log('onSelectSet'),
+			forward('onSelectSet')
+		),
 
-        onToggleTheme: handle(
-            adaptEvent(
-                ({lightModeActive}) => ({
-                    lightModeActive: !lightModeActive
-                }),
-                forward('onToggleTheme')
-            )
-        ),
+		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		onToggleTheme: handle(
+			log('onToggleTheme'),
+			forward('onToggleTheme')
+		),
 
-        // These don't actually do anything and may not be necessary
-        onRandomizeAll: forward('onRandomizeAll'),
-        onRandomizeIndividual: forward('onRandomizeIndividual'),
-    },
+		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		onRandomizeAll: handle(
+			log('onRandomizeAll'),
+			forward('onRandomizeAll')
+		),
 
-    render: (props) => (
-        <div>
-            {/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
-            <script src="/__/firebase/7.8.1/firebase-app.js" />
+		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		onRandomizeIndividual: handle(
+			log('onRandomizeIndividual'),
+			forward('onRandomizeIndividual')
+		)
+	},
 
-            {/* <!-- TODO: Add SDKs for Firebase products that you want to use */}
-                {/* https://firebase.google.com/docs/web/setup#available-libraries --> */}
+	render: ({
+		activeSet,
+		cards: randomizedCards,
+		expansion,
+		lightModeActive,
+		onEnableExpansion,
+		onRandomizeAll,
+		onRandomizeIndividual,
+		onSelectSet,
+		onSetPlayerCount,
+		onToggleTheme,
+		selectedPlayerCount,
+		...rest
+	}) => {
+		return (
+			<React.Fragment>
+				{/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
+				<script src="/__/firebase/7.8.1/firebase-app.js" />
 
-            {/* <!-- Initialize Firebase --> */}
-            <script src="/__/firebase/init.js" />
+				{/* <!-- TODO: Add SDKs for Firebase products that you want to use */}
+				{/* https://firebase.google.com/docs/web/setup#available-libraries --> */}
 
-            <Panels>
-                <MainPanel {...props}/>
-            </Panels>
-        </div>
-    )
+				{/* <!-- Initialize Firebase --> */}
+				<script src="/__/firebase/init.js" />
+
+				<Panels {...rest}>
+					<MainPanel
+						{...{
+							cards: randomizedCards,
+							lightModeActive,
+							activeSet,
+							selectedPlayerCount,
+							expansion,
+							onRandomizeAll,
+							onRandomizeIndividual,
+							onToggleTheme,
+							onSelectSet,
+							onSetPlayerCount,
+							onEnableExpansion
+						}}
+					/>
+				</Panels>
+			</React.Fragment>
+		);
+	}
 });
 
-export default MoonstoneDecorator(App);
+const AppDecorator = compose(
+	MoonstoneDecorator,
+	Changeable({prop: 'activeSet', change: 'onSelectSet'}),
+	Changeable({prop: 'cards', change: 'onRandomizeAll'}),
+	Changeable({prop: 'expansion', change: 'onEnableExpansion'}),
+	Changeable({prop: 'lightModeActive', change: 'onToggleTheme'}),
+	Changeable({prop: 'selectedPlayerCount', change: 'onSetPlayerCount'})
+);
+
+export default AppDecorator(App);
