@@ -23,6 +23,7 @@ const CardBase = kind({
 	propTypes: {
 		cards: PropTypes.object,
 		index: PropTypes.number,
+		lightModeActive: PropTypes.bool,
 		name: PropTypes.string,
 		onRandomize: PropTypes.func
 	},
@@ -39,15 +40,15 @@ const CardBase = kind({
 
 	computed: {
 		// Appends the name to the className so that the background color can be set
-		className: ({name, styler}) => styler.append(name)
+		className: ({lightModeActive, name, styler}) => styler.append(name, {light: lightModeActive})
 	},
 
 	render: ({cards, name, onRandomize, ...rest}) => {
 		const {title, descriptions, index} = cards[name];
-		// <Cell component={BodyText}>{descriptions[index]}</Cell>
+		delete rest.lightModeActive;
 		return (
 			<Column {...rest}>
-				<Cell component={Heading} showLine shrink>{title}</Cell>
+				<Cell shrink component={Heading} showLine>{title}</Cell>
 				<Cell><BodyText>{descriptions[index]}</BodyText></Cell>
 				<Cell shrink><IconButton onClick={onRandomize} size="small">
 					{/* <FontAwesomeIcon icon={faDice} /> */}
