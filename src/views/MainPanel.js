@@ -1,17 +1,24 @@
 import kind from '@enact/core/kind';
-import {Panel, Header} from '@enact/moonstone/Panels';
+// import {Panel, Header} from '@enact/moonstone/Panels';
 import React from 'react';
-import Layout, { Cell, Column } from '@enact/ui/Layout';
+import Layout, { Row, Cell, Column, CellDecorator, LayoutDecorator } from '@enact/ui/Layout';
 import PropTypes from 'prop-types';
-import Card from '../components/Card.js';
+import Card from '../components/Card/Card.js';
 import RadioItem from '@enact/moonstone/RadioItem';
 import Button from '@enact/moonstone/Button';
+import IconButton from '@enact/moonstone/IconButton';
 import ToggleItem from '@enact/moonstone/ToggleItem';
 import Changeable from '@enact/ui/Changeable';
 import Group from '@enact/ui/Group';
 import Checkbox from '@enact/moonstone/Checkbox';
 import Switch from '@enact/moonstone/Switch';
 import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDice } from '@fortawesome/free-solid-svg-icons'
+
+const GroupLayout = LayoutDecorator(Group);
+const RadioItemCell = CellDecorator(RadioItem);
+const ButtonCell = CellDecorator(Button);
 
 const MainPanel = kind({
     name: 'MainPanel',
@@ -68,26 +75,27 @@ const MainPanel = kind({
     },
 
     render: ({onEnableExpansion, expansion, onSetPlayerCount, selectedPlayerCount, onSelectSet, activeSet, onToggleTheme, lightModeActive, cards, onRandomizeIndividual, onRandomizeAll, ...rest}) => (
-        <fieldset>
+        // <fieldset>
             <Layout {...rest}>
-                <Row>
+                <Column>
+                <Row style={{height: '10%'}}>
                     <Cell><ToggleItem iconComponent={Checkbox} onToggle={onEnableExpansion} selected={expansion}>The Herb Witches</ToggleItem></Cell>
                     <Cell>
-                        <Group childComponent={RadioItem} select="radio" onSelect={onSetPlayerCount} selected={selectedPlayerCount}>
+                        <GroupLayout orientation="horizontal" childComponent={RadioItemCell} select="radio" onSelect={onSetPlayerCount} selected={selectedPlayerCount}>
                             {[
                                 {children: '2 Players'},
                                 {children: '3,4,5 Players'}
                             ]}
-                        </Group>
+                        </GroupLayout>
                     </Cell>
                     <Cell><Switch onToggle={onToggleTheme} selected={lightModeActive}>Dark/Light Mode</Switch></Cell>
                 </Row>
-                <Row>
-                    <Cell>
+                <Row style={{height: '90%'}}>
+                    <Cell size="10%">
                         <Column>
-                        <Cell component="header"><h1>Ingredient Sets</h1></Cell>
+                        <Cell component="header">Ingredient Sets</Cell>
                         <Cell>
-                            <Group childComponent={Button} select="radio" onSelect={onSelectSet} selected={activeSet}>
+                            <Group childComponent={ButtonCell} select="radio" onSelect={onSelectSet} selected={activeSet}>
                                 {[
                                     {children: '1'},
                                     {children: '2'},
@@ -106,36 +114,37 @@ const MainPanel = kind({
                         <Cell><Button onClick={onSelectSet}>6</Button></Cell> */}
                         </Column>
                     </Cell>
-                    <Cell>
+                    <Cell size="90%">
                         {/* Randomized Cards */}
                         <Column>
-                        <Row>
+                        <Row align="center">
                             <Card name="toadstool" descriptions={cards.toadstool.descriptions} index={cards.toadstool.index} onRandomize={onRandomizeIndividual} />
                             <Card name="crowSkull" descriptions={cards.crowSkull.descriptions} index={cards.crowSkull.index} onRandomize={onRandomizeIndividual} />
                             <Card name="mandrake" descriptions={cards.mandrake.descriptions} index={cards.mandrake.index} onRandomize={onRandomizeIndividual} />
                             <Card name="locoweed" descriptions={cards.locoweed.descriptions} index={cards.locoweed.index} onRandomize={onRandomizeIndividual} />
                         </Row>
-                        <Row>
+                        <Row align="center">
                             <Card name="gardenSpider" descriptions={cards.gardenSpider.descriptions} index={cards.gardenSpider.index} onRandomize={onRandomizeIndividual} />
-                            <Card name="africanDeathsHeadHawkmoth" descriptions={cards.africanDeathsHeadHawkmoth.descriptions} index={index.africanDeathsHeadHawkmoth.index} onRandomize={onRandomizeIndividual} />
+                            <Card name="africanDeathsHeadHawkmoth" descriptions={cards.africanDeathsHeadHawkmoth.descriptions} index={cards.africanDeathsHeadHawkmoth.index} onRandomize={onRandomizeIndividual} />
                             <Card name="ghostsBreath" descriptions={cards.ghostsBreath.descriptions} index={cards.ghostsBreath.index} onRandomize={onRandomizeIndividual} />
                             <Card name="pumpkin" descriptions={cards.pumpkin.descriptions} index={cards.pumpkin.index} onRandomize={onRandomizeIndividual} />
                         </Row>
-                        <Row>
+                        <Row align="center">
                             <Card name="snakeWitch" descriptions={cards.snakeWitch.descriptions} index={cards.snakeWitch.index} onRandomize={onRandomizeIndividual} />
                             <Card name="owlWitch" descriptions={cards.owlWitch.descriptions} index={cards.owlWitch.index} onRandomize={onRandomizeIndividual} />
                             <Card name="catWitch" descriptions={cards.catWitch.descriptions} index={cards.catWitch.index} onRandomize={onRandomizeIndividual} />
                         </Row>
                         <Cell>
                             <IconButton onClick={onRandomizeAll} size="large">
-                                <i class="fas fa-dice"></i>
+                                <FontAwesomeIcon icon={faDice} />
                             </IconButton>
                         </Cell>
                         </Column>
                     </Cell>
                 </Row>
+                </Column>
             </Layout>
-        </fieldset>
+        // </fieldset>
         // <Panel {...props}>
         // 	<Header title="Hello world!" />
         // 	<Button>Click me</Button>
@@ -143,7 +152,7 @@ const MainPanel = kind({
     )
 });
 
-export default Changeable({prop: 'cards', change:'onRandomizeAll'}, 
+export default Changeable({prop: 'cards', change:'onRandomizeAll'},
     Changeable({prop: 'lightModeActive', change: 'onToggleTheme'},
         Changeable({prop: 'activeSet', change:'onSelectSet'},
             Changeable({prop: 'selectedPlayerCount', change: 'onSetPlayerCount'},

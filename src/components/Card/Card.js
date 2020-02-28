@@ -3,6 +3,9 @@ import kind from '@enact/core/kind';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Changeable from '@enact/ui/Changeable';
+import css from './Card.less';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDice } from '@fortawesome/free-solid-svg-icons'
 
 const names = {
     "pumpkin": "Pumpkin",
@@ -25,7 +28,7 @@ const CardBase = kind({
         css,
         className: 'card'
     },
-    
+
     propTypes: {
         name: PropTypes.string,
         descriptions: PropTypes.array,
@@ -42,19 +45,20 @@ const CardBase = kind({
         }
     },
 
-    computer: {
+    computed: {
         // Appends the name to the className so that the background color can be set
-        className: ({name, styler}) => styler.append({name})
+        className: ({name, styler}) => styler.append(name)
     },
 
-    render: ({name, descriptions, onRandomize, ...rest}) => {
+    render: ({name, descriptions, onRandomize, index, ...rest}) => {
         return (
             <div {...rest}>
-                <h1>names[{name}]</h1>
+                <h1>{names[name]}</h1>
                 <br/>
                 {descriptions[index]}
                 <IconButton onClick={onRandomize} size="small">
-                    <i class="fas fa-dice"></i>
+                    {/* <FontAwesomeIcon icon={faDice} /> */}
+                    rollforward
                 </IconButton>
             </div>
         );

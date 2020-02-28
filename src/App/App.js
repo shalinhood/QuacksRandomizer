@@ -2,21 +2,21 @@ import kind from '@enact/core/kind';
 import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
 import Panels from '@enact/moonstone/Panels';
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import MainPanel from '../views/MainPanel';
 
 import css from './App.module.less';
 
-const ingredients = [
-    "pumpkin",
-    "crowSkull",
-    "toadstool",
-    "mandrake",
-    "locoweed",
-    "gardenSpider",
-    "ghostsBreath",
-    "africanDeathsHeadHawkmoth"
-];
+// const ingredients = [
+//     "pumpkin",
+//     "crowSkull",
+//     "toadstool",
+//     "mandrake",
+//     "locoweed",
+//     "gardenSpider",
+//     "ghostsBreath",
+//     "africanDeathsHeadHawkmoth"
+// ];
 
 const pumpkinDesc = [
     "1: 3 | 6: 22 \n Has no effect other than adding flavor!"
@@ -79,11 +79,11 @@ const africanDeathsHeadHawkmothDesc = [
     "9 \n The player whose black chips is the furthest ahead in the potcan move their droplet 1 space foward. The player with the second furthest black chip receives 1 ruby."
 ];
 
-const witches = [
-    "snakeWitch",
-    "catWitch",
-    "owlWitch"
-];
+// const witches = [
+//     "snakeWitch",
+//     "catWitch",
+//     "owlWitch"
+// ];
 
 const catWitchDesc = [
     "Brewing Phase \n Use your flask after your pot explodes.",
@@ -156,7 +156,7 @@ const allCards = {
 const App = kind({
     name: 'App',
 
-    propTypes: {
+    PropTypes: {
         onEnableExpansion: PropTypes.func,
         expansion: PropTypes.bool,
         onSetPlayerCount: PropTypes.func,
@@ -195,12 +195,12 @@ const App = kind({
         onSetPlayerCount: (ev, {onSetPlayerCount}) => {
             if (onSetPlayerCount) {
                 if (ev.children === '2 Players') {
-                    onEnableExpansion({
+                    onSetPlayerCount({
                         selectedPlayerCount: 0
                     })
                 }
                 if (ev.children === '3,4,5 Players') {
-                    onEnableExpansion({
+                    onSetPlayerCount({
                         selectedPlayerCount: 1
                     })
                 }
@@ -232,19 +232,39 @@ const App = kind({
                         onSelectSet({activeSet: null});
                 }
             }
+        },
+
+        onToggleTheme: (ev, {onToggleTheme}) => {
+            if (onToggleTheme) {
+                onToggleTheme({
+                    lightModeActive: !ev.lightModeActive
+                })
+            }
+        },
+
+        onRandomizeAll: (ev, {onRandomizeAll}) => {
+            if (onRandomizeAll) {
+                onRandomizeAll()
+            }
+        },
+
+        onRandomizeIndividual: (ev, {onRandomizeIndividual}) => {
+            if (onRandomizeIndividual) {
+                onRandomizeIndividual()
+            }
         }
     },
 
     render: (props) => (
         <div>
             {/* <!-- The core Firebase JS SDK is always required and must be listed first --> */}
-            <script src="/__/firebase/7.8.1/firebase-app.js"></script>
+            <script src="/__/firebase/7.8.1/firebase-app.js" />
 
             {/* <!-- TODO: Add SDKs for Firebase products that you want to use */}
                 {/* https://firebase.google.com/docs/web/setup#available-libraries --> */}
 
             {/* <!-- Initialize Firebase --> */}
-            <script src="/__/firebase/init.js"></script>
+            <script src="/__/firebase/init.js" />
 
             <Panels>
                 <MainPanel {...props}/>
