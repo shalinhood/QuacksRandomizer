@@ -1,4 +1,5 @@
 import kind from '@enact/core/kind';
+import {handle, forward, adaptEvent} from '@enact/core/handle';
 import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
 import Panels from '@enact/moonstone/Panels';
 import React from 'react';
@@ -46,13 +47,14 @@ const App = kind({
     },
 
     handlers: {
-        onEnableExpansion: (ev, {onEnableExpansion}) => {
-            if (onEnableExpansion) {
-                onEnableExpansion({
-                    expansion: !ev.expansion
-                });
-            }
-        },
+        onEnableExpansion: handle(
+            adaptEvent(
+                ({expansion}) => ({
+                    expansion: !expansion
+                }),
+                forward('onEnableExpansion')
+            )
+        ),
 
         onSetPlayerCount: (ev, {onSetPlayerCount}) => {
             if (onSetPlayerCount) {
@@ -69,52 +71,27 @@ const App = kind({
             }
         },
 
-        onSelectSet: (ev, {onSelectSet}) => {
-            if (onSelectSet) {
-                switch (ev.children) {
-                    case '1':
-                        onSelectSet({activeSet: 0});
-                        break;
-                    case '2':
-                        onSelectSet({activeSet: 1});
-                        break;
-                    case '3':
-                        onSelectSet({activeSet: 2});
-                        break;
-                    case '4':
-                        onSelectSet({activeSet: 3});
-                        break;
-                    case '5':
-                        onSelectSet({activeSet: 4});
-                        break;
-                    case '6':
-                        onSelectSet({activeSet: 5});
-                        break;
-                    default:
-                        onSelectSet({activeSet: null});
-                }
-            }
-        },
+        onSelectSet: handle(
+            adaptEvent(
+                ({children}) => ({
+                    activeSet: (children ? (parseInt(children) - 1) : null)
+                }),
+                forward('onSelectSet')
+            )
+        ),
 
-        onToggleTheme: (ev, {onToggleTheme}) => {
-            if (onToggleTheme) {
-                onToggleTheme({
-                    lightModeActive: !ev.lightModeActive
-                })
-            }
-        },
+        onToggleTheme: handle(
+            adaptEvent(
+                ({lightModeActive}) => ({
+                    lightModeActive: !lightModeActive
+                }),
+                forward('onToggleTheme')
+            )
+        ),
 
-        onRandomizeAll: (ev, {onRandomizeAll}) => {
-            if (onRandomizeAll) {
-                onRandomizeAll()
-            }
-        },
-
-        onRandomizeIndividual: (ev, {onRandomizeIndividual}) => {
-            if (onRandomizeIndividual) {
-                onRandomizeIndividual()
-            }
-        }
+        // These don't actually do anything and may not be necessary
+        onRandomizeAll: forward('onRandomizeAll'),
+        onRandomizeIndividual: forward('onRandomizeIndividual'),
     },
 
     render: (props) => (
