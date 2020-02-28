@@ -1,70 +1,68 @@
 import IconButton from '@enact/moonstone/IconButton';
 import kind from '@enact/core/kind';
+import {handle, forward, adaptEvent} from '@enact/core/handle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Changeable from '@enact/ui/Changeable';
-import css from './Card.less';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDice } from '@fortawesome/free-solid-svg-icons'
+import {Cell, Column} from '@enact/ui/Layout';
+import Heading from '@enact/moonstone/Heading';
+import BodyText from '@enact/moonstone/BodyText';
 
-const names = {
-    "pumpkin": "Pumpkin",
-    "crowSkull": "Crow Skull",
-    "toadstool": "Toadstool",
-    "mandrake": "Mandrake",
-    "locoweed": "Locoweed",
-    "gardenSpider": "Garden Spider",
-    "ghostsBreath": "Ghost's Breath",
-    "africanDeathsHeadHawkmoth": "African Death's Head Hawkmoth",
-    "snakeWitch": "Snake Witch",
-    "catWitch": "Cat Witch",
-    "owlWitch": "Owl Witch"
-};
+import css from './Card.module.less';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faDice } from '@fortawesome/free-solid-svg-icons'
 
 const CardBase = kind({
-    name: "Card",
+	name: 'Card',
 
-    styles: {
-        css,
-        className: 'card'
-    },
+	styles: {
+		css,
+		className: 'card'
+	},
 
-    propTypes: {
-        name: PropTypes.string,
-        descriptions: PropTypes.array,
-        index: PropTypes.number,
-        onRandomize: PropTypes.func
-    },
+	propTypes: {
+		cards: PropTypes.object,
+		index: PropTypes.number,
+		name: PropTypes.string,
+		onRandomize: PropTypes.func
+	},
 
-    handlers: {
-        // Sends the name to App so that it can send the new index
-        onRandomize: (ev, {name, onRandomize}) => {
-            if (onRandomize) {
-                onRandomize({name});
-            }
-        }
-    },
+	handlers: {
+		// Sends the name to App so that it can send the new index
+		onRandomize: handle(
+			adaptEvent(
+				(ev, {name}) => ({name}),
+				forward('onRandomize')
+			)
+		)
+	},
 
-    computed: {
-        // Appends the name to the className so that the background color can be set
-        className: ({name, styler}) => styler.append(name)
-    },
+	computed: {
+		// Appends the name to the className so that the background color can be set
+		className: ({name, styler}) => styler.append(name)
+	},
 
-    render: ({name, descriptions, onRandomize, index, ...rest}) => {
-        return (
-            <div {...rest}>
-                <h1>{names[name]}</h1>
-                <br/>
-                {descriptions[index]}
-                <IconButton onClick={onRandomize} size="small">
-                    {/* <FontAwesomeIcon icon={faDice} /> */}
-                    rollforward
-                </IconButton>
-            </div>
-        );
-    }
+	render: ({cards, name, onRandomize, ...rest}) => {
+		const {title, descriptions, index} = cards[name];
+		// <Cell component={BodyText}>{descriptions[index]}</Cell>
+		return (
+			<Column {...rest}>
+				<Cell component={Heading} showLine shrink>{title}</Cell>
+				<Cell><BodyText>{descriptions[index]}</BodyText></Cell>
+				<Cell shrink><IconButton onClick={onRandomize} size="small">
+					{/* <FontAwesomeIcon icon={faDice} /> */}
+					rollforward
+				</IconButton>
+				</Cell>
+			</Column>
+		);
+	}
 });
 
 const Card = Changeable({prop: 'index', change: 'onRandomize'}, CardBase);
+
 export default Card;
-export {Card, CardBase};
+export {
+	Card,
+	CardBase
+};

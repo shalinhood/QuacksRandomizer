@@ -1,11 +1,13 @@
 {
     "pumpkin": {
+        "title": "Pumpkin",
         "descriptions": [
             "1: 3 | 6: 22 \n Has no effect other than adding flavor!"
         ],
         "index": 0
     },
     "crowSkull": {
+        "title": "Crow Skull",
         "descriptions": [
             "1: 5 | 2: 10 | 4: 19 \n Draw 1/2/4 chips from your bag. You may plae 1 of them in your pot.",
             "1: 5 | 2: 10 | 4: 19 \n If the pot explodes within the next 1/2/4 chips, you get victory points and money during the evaluation phase (but no die roll).",
@@ -17,6 +19,7 @@
         "index": 0
     },
     "toadstool": {
+        "title": "Toadstool",
         "descriptions": [
             "1: 6 | 2: 10 | 4: 16 \n If there are already 1 or 2 orange chips in your pot move the red chip 1 additional space forward. If there are 3 or more orange chips, move the red chip 2 additional spaces forward.",
             "1: 4 | 2: 8 | 4: 14 \n Put this chip aside. After you have stopped drawing, choose to either use ithis round or save it for the end of a future turn.",
@@ -28,6 +31,7 @@
         "index": 0
     },
     "mandrake": {
+        "title": "Mandrake",
         "descriptions": [
             "1: 8 | 2: 12 | 4: 18 \n If the previously played chip was white, put the white chip back into the bag.",
             "1: 9 | 2: 13 | 4: 19 \n The next chip that is placed is moved ahead twice as far as its number indicates.",
@@ -39,6 +43,7 @@
         "index": 0
     },
     "locoweed": {
+        "title": "Locoweed",
         "descriptions": [
             "8 \n Place this chip forward for the total number of spaces you moved your rat stone at the beginning of your turn, plus 1 (max. 4).",
             "10 \n Copy the action and value of the last colored chip placed (ignore white chips)."
@@ -46,6 +51,7 @@
         "index": 0
     },
     "gardenSpider": {
+        "title": "Garden Spider",
         "descriptions": [
             "1: 4 | 2: 8 | 4: 14 \n For each green chip that is the last or next-to-last chip, you receive 1 ruby.",
             "1: 6 | 2: 11 | 4: 18 \n For each green chip that is the last or next-to-last chip, take 1 of the indicated ingredients: 1 -> orange 1-chip, 2 -> blue or red 1-chip, 4 -> yellow or purple 1-chip",
@@ -57,6 +63,7 @@
         "index": 0
     },
     "africanDeathsHeadHawkmoth": {
+        "title": "Ghost's Breath",
         "descriptions": [
             "10 \n If you draw as many black chips as the other player move your droplet 1 space forward. If you draw more chips than the other player move your droplet 1 space forward and receive 1 ruby.",
             "10 \n If you draw more black chips than one of the players sitting next to you move your droplet 1 space foward. If you draw more black chips than both players sitting next to you move your droplet 1 space forward and receive 1 ruby.",
@@ -66,6 +73,7 @@
         "index": 0
     },
     "ghostsBreath": {
+        "title": "African Death's Head Hawkmoth",
         "descriptions": [
             "9 \n Count the purple chips in your pot. 1 purple chip -> 1 victory point. 2 purple chips -> 1 victory point and 1 ruby. 3+ purple chips -> 2 victory points and you may more your droplet 1 space forward.",
             "12 \n You can discard drawn purple chips and exchange them for the following bonuses. 1 purple chip -> 1 black 1-chip, 1 victory point, and 1 ruby. 2 purple chips -> 1 green 1-chip, 1 blue 2-chip, 3 victory points, and you may move your droplet 1 space foward. 3 purple chips -> 1 yellow 4-chip, 6 victory points, 1 ruby, and you may move your droplet 2 spaces forward.",
@@ -77,6 +85,7 @@
         "index": 0
     },
     "snakeWitch": {
+        "title": "Snake Witch",
         "descriptions": [
             "Victory Point Phase \n According to the number of different chip colors in your pot, you receive the following victory points: 1-4 -> 3, 5-> 4, 6-> 7, 7 -> 10, 8 -> 14",
             "Victory Point Phase \n For every colored 2-, 4-, and 6-chip, as well as every purple and Locoweed chip in your bag, earn 2 victory points.",
@@ -86,6 +95,7 @@
         "index": 0
     },
     "catWitch": {
+        "title": "Cat Witch",
         "descriptions": [
             "Brewing Phase \n Use your flask after your pot explodes.",
             "Brewing Phase \n Draw 6 chips and decide in what order to place them. You do not have to use them all; return unused chips to the bag.",
@@ -95,6 +105,7 @@
         "index": 0
     },
     "owlWitch": {
+        "title": "Owl Witch",
         "descriptions": [
             "Buying Phase \n Upgrade the last two chips you added to your pot by 1 level or upgrade one chip anywhere in your pot.",
             "Buying Phase \n Double the coins you have to buy ingredients this phase. You can still only buy a total of 2 different-colored chips.",
