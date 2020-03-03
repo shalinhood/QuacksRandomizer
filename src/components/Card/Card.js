@@ -44,11 +44,12 @@ const CardBase = kind({
 	},
 
 	render: ({cards, name, onRandomize, ...rest}) => {
-		const {title, descriptions, index} = cards[name];
+		const {title, topMatter, descriptions, index} = cards[name];
 		delete rest.lightModeActive;
 		return (
 			<Column {...rest}>
 				<Cell shrink component={Heading} showLine>{title}</Cell>
+				<Cell shrink><BodyText>{topMatter[index]}</BodyText></Cell>
 				<Cell><BodyText>{descriptions[index]}</BodyText></Cell>
 				<Cell shrink><IconButton onClick={onRandomize} size="small">
 					{/* <FontAwesomeIcon icon={faDice} /> */}
