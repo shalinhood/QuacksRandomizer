@@ -3,7 +3,7 @@ import {Panel} from '@enact/moonstone/Panels';
 import React from 'react';
 import PropTypes from 'prop-types';
 // import {handle, forward, adaptEvent, log} from '@enact/core/handle';
-import {handle, forward, adaptEvent} from '@enact/core/handle';
+import {handle, forward, adaptEvent, log} from '@enact/core/handle';
 import Group from '@enact/ui/Group';
 import {Row, Cell, Column} from '@enact/ui/Layout';
 import RadioItem from '@enact/moonstone/RadioItem';
@@ -83,14 +83,6 @@ const MainPanel = kind({
 				forward('onSelectSet')
 			)
 		)
-
-		// Lets App know the button was pressed and changes the index for all the cards
-		// onRandomizeAll: handle(
-		// 	adaptEvent(
-		// 		(ev, props) => (ev),
-		// 		forward('onRandomizeAll')
-		// 	)
-		// )
 	},
 
 	render: ({

@@ -1,5 +1,5 @@
 import kind from '@enact/core/kind';
-import {handle, forward, log} from '@enact/core/handle';
+import {handle, forward, log, adaptEvent} from '@enact/core/handle';
 import MoonstoneDecorator from '@enact/moonstone/MoonstoneDecorator';
 import Panels from '@enact/moonstone/Panels';
 import React from 'react';
@@ -12,6 +12,8 @@ import MainPanel from '../views/MainPanel';
 import css from './App.module.less';
 
 import cards from './cards.json';
+
+import {activateSet, randomizeCard, randomizeAllCards, changePlayerCount} from './card-controller.js';
 
 // const witches = [
 //     "snakeWitch",
@@ -50,39 +52,52 @@ const App = kind({
 
 	handlers: {
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
-		onEnableExpansion: handle(
-			log('onEnableExpansion'),
-			forward('onEnableExpansion')
-		),
+		// onEnableExpansion: handle(
+		// 	log('onEnableExpansion'),
+		// 	forward('onEnableExpansion')
+		// ),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
 		onSetPlayerCount: handle(
-			log('onSetPlayerCount'),
-			forward('onSetPlayerCount')
+			adaptEvent(
+				(ev, {cards}) => ({cards: changePlayerCount(cards, ev.selectedPlayerCount), selectedPlayerCount: ev.selectedPlayerCount}),
+				forward('onSetPlayerCount')
+			)
 		),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
+		// onSelectSet: handle(
+		// 	log('onSelectSet'),
+		// 	forward('onSelectSet')
+		// ),
+
 		onSelectSet: handle(
-			log('onSelectSet'),
-			forward('onSelectSet')
+			adaptEvent(
+				(ev, {cards, selectedPlayerCount}) => ({cards: activateSet(cards, selectedPlayerCount, ev.activeSet), activeSet: ev.activeSet}),
+				forward('onSelectSet')
+			)
 		),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
-		onToggleTheme: handle(
-			log('onToggleTheme'),
-			forward('onToggleTheme')
-		),
+		// onToggleTheme: handle(
+		// 	log('onToggleTheme'),
+		// 	forward('onToggleTheme')
+		// ),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
 		onRandomizeAll: handle(
-			log('onRandomizeAll'),
-			forward('onRandomizeAll')
+			adaptEvent(
+				(ev, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeAllCards(cards, selectedPlayerCount, expansion), activeSet: null}),
+				forward('onRandomizeAll')
+			)
 		),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
 		onRandomizeIndividual: handle(
-			log('onRandomizeIndividual'),
-			forward('onRandomizeIndividual')
+			adaptEvent(
+				(ev, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeCard(cards, expansion, selectedPlayerCount, ev.name), activeSet: null}),
+				forward('onRandomizeIndividual')
+			)
 		)
 	},
 
@@ -138,9 +153,13 @@ const App = kind({
 const AppDecorator = compose(
 	MoonstoneDecorator,
 	Changeable({prop: 'activeSet', change: 'onSelectSet'}),
+	Changeable({prop: 'cards', change: 'onSelectSet'}),
 	Changeable({prop: 'cards', change: 'onRandomizeAll'}),
+	Changeable({prop: 'activeSet', change: 'onRandomizeAll'}),
 	Changeable({prop: 'cards', change: 'onRandomizeIndividual'}),
+	Changeable({prop: 'activeSet', change: 'onRandomizeAll'}),
 	Changeable({prop: 'expansion', change: 'onEnableExpansion'}),
+	Changeable({prop: 'cards', change: 'onSetPlayerCount'}),
 	Changeable({prop: 'selectedPlayerCount', change: 'onSetPlayerCount'})
 );
 
