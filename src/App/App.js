@@ -11,7 +11,7 @@ import MainPanel from '../views/MainPanel';
 
 import css from './App.module.less';
 
-import cards from './cards.json';
+import cardStore from './cards.json';
 
 import {activateSet, randomizeCard, randomizeAllCards, changePlayerCount} from './card-controller.js';
 
@@ -30,20 +30,15 @@ const App = kind({
 		expansion: PropTypes.bool,
 		lightModeActive: PropTypes.bool,
 		onEnableExpansion: PropTypes.func,
-		onRandomizeAll: PropTypes.func,
-		onRandomizeIndividual: PropTypes.func,
+		onRefreshCards: PropTypes.func,
 		onSelectSet: PropTypes.func,
 		onSetPlayerCount: PropTypes.func,
 		onToggleTheme: PropTypes.func,
 		selectedPlayerCount: PropTypes.number
 	},
 
-	defaultProps: {
-		activeSet: 1,
-		cards,
-		expansion: true,
-		selectedPlayerCount: 0
-	},
+	// defaultProps: {
+	// },
 
 	styles: {
 		css,
@@ -60,9 +55,12 @@ const App = kind({
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
 		onSetPlayerCount: handle(
 			adaptEvent(
-				(ev, {cards}) => ({cards: changePlayerCount(cards, ev.selectedPlayerCount), selectedPlayerCount: ev.selectedPlayerCount}),
-				forward('onSetPlayerCount')
-			)
+				({selectedPlayerCount}, {cards}) => ({cards: changePlayerCount(cards, selectedPlayerCount), selectedPlayerCount}),
+				handle(
+					forward('onSetPlayerCount'),
+					forward('onRefreshCards')
+				)
+			),
 		),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
@@ -73,9 +71,12 @@ const App = kind({
 
 		onSelectSet: handle(
 			adaptEvent(
-				(ev, {cards, selectedPlayerCount}) => ({cards: activateSet(cards, selectedPlayerCount, ev.activeSet), activeSet: ev.activeSet}),
-				forward('onSelectSet')
-			)
+				({activeSet}, {cards, selectedPlayerCount}) => ({cards: activateSet(cards, selectedPlayerCount, activeSet), activeSet}),
+				handle(
+					forward('onSelectSet'),
+					forward('onRefreshCards')
+				)
+			),
 		),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
@@ -88,22 +89,22 @@ const App = kind({
 		onRandomizeAll: handle(
 			adaptEvent(
 				(ev, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeAllCards(cards, selectedPlayerCount, expansion), activeSet: null}),
-				forward('onRandomizeAll')
-			)
+				forward('onRefreshCards')
+			),
 		),
 
 		// Safe to remove - Doesn't do anything except print the value to the console, and forward the event to Changeable.
 		onRandomizeIndividual: handle(
 			adaptEvent(
-				(ev, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeCard(cards, expansion, selectedPlayerCount, ev.name), activeSet: null}),
-				forward('onRandomizeIndividual')
-			)
+				({name}, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeCard(cards, expansion, selectedPlayerCount, name), activeSet: null}),
+				forward('onRefreshCards')
+			),
 		)
 	},
 
 	render: ({
 		activeSet,
-		cards: randomizedCards,
+		cards,
 		expansion,
 		lightModeActive,
 		onEnableExpansion,
@@ -115,7 +116,7 @@ const App = kind({
 		selectedPlayerCount,
 		...rest
 	}) => {
-		// const skin = (skin ? 'light' : 'dark');
+		delete rest.onRefreshCards;
 
 		return (
 			<React.Fragment>
@@ -132,7 +133,7 @@ const App = kind({
 					<MainPanel
 						{...{
 							activeSet,
-							cards: randomizedCards,
+							cards,
 							expansion,
 							lightModeActive,
 							onEnableExpansion,
@@ -153,13 +154,8 @@ const App = kind({
 const AppDecorator = compose(
 	MoonstoneDecorator,
 	Changeable({prop: 'activeSet', change: 'onSelectSet'}),
-	Changeable({prop: 'cards', change: 'onSelectSet'}),
-	Changeable({prop: 'cards', change: 'onRandomizeAll'}),
-	Changeable({prop: 'activeSet', change: 'onRandomizeAll'}),
-	Changeable({prop: 'cards', change: 'onRandomizeIndividual'}),
-	Changeable({prop: 'activeSet', change: 'onRandomizeAll'}),
+	Changeable({prop: 'cards', change: 'onRefreshCards'}),
 	Changeable({prop: 'expansion', change: 'onEnableExpansion'}),
-	Changeable({prop: 'cards', change: 'onSetPlayerCount'}),
 	Changeable({prop: 'selectedPlayerCount', change: 'onSetPlayerCount'})
 );
 
@@ -171,8 +167,20 @@ const DecoratedApp = AppDecorator(App);
 // MoonstoneDecorator needs to apply the skin. This reads the props set by Changeable below
 // and sets the "skin" prop on the DecoratedApp.
 //
-// eslint-disable-next-line enact/prop-types
-const SkinCapableApp = (props) => <DecoratedApp skin={props.lightModeActive ? 'light' : 'dark'} {...props} />;
+// We specify "default*" because this is how we feed defaults into the `Changeable` HOCs above
+// (Defined on the AppDecorator). The defaultProps on the component for these Changeable props were
+// being ignored.
+const SkinCapableApp = (props) => (
+	<DecoratedApp
+		// eslint-disable-next-line enact/prop-types
+		skin={props.lightModeActive ? 'light' : 'dark'}
+		defaultCards={cardStore}
+		defaultActiveSet={1}
+		defaultExpansion
+		defaultSelectedPlayerCount={0}
+		{...props}
+	/>
+);
 
 // Set up a Changeable wrapper to handle the state of the `lightModeActive` prop and the `onToggleTheme` callback.
 const SkinnedApp = Changeable({prop: 'lightModeActive', change: 'onToggleTheme'}, SkinCapableApp);
