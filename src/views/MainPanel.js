@@ -137,25 +137,25 @@ const MainPanel = kind({
 									<Column>
 										<Cell shrink>
 											<Row>
-												<Cell className={css.card}><Card name="toadstool" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="crowSkull" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="mandrake" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="locoweed" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="toadstool" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="crowSkull" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="mandrake" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="locoweed" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 											</Row>
 										</Cell>
 										<Cell shrink>
 											<Row>
-												<Cell className={css.card}><Card name="gardenSpider" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="africanDeathsHeadHawkmoth" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="ghostsBreath" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="pumpkin" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="gardenSpider" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="africanDeathsHeadHawkmoth" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="ghostsBreath" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="pumpkin" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 											</Row>
 										</Cell>
 										<Cell shrink>
 											<Row>
-												<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
-												<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} lightModeActive={lightModeActive} /></Cell>
+												<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 											</Row>
 										</Cell>
 									</Column>
