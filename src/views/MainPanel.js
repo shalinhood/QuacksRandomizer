@@ -3,7 +3,7 @@ import {Panel} from '@enact/moonstone/Panels';
 import React from 'react';
 import PropTypes from 'prop-types';
 // import {handle, forward, adaptEvent, log} from '@enact/core/handle';
-import {handle, forward, adaptEvent, log} from '@enact/core/handle';
+import {handle, forward, adaptEvent} from '@enact/core/handle';
 import Group from '@enact/ui/Group';
 import {Row, Cell, Column} from '@enact/ui/Layout';
 import RadioItem from '@enact/moonstone/RadioItem';
@@ -50,6 +50,34 @@ const MainPanel = kind({
 		className: 'mainPanel'
 	},
 
+	computed: {
+		ingredientSetOptions: ({expansion}) => {
+			if (expansion) {
+				return ['1', '2', '3', '4', '5', '6'];
+			}
+			else {
+				return ['1', '2', '3', '4'];
+			}
+		},
+
+		witchCards: ({expansion, cards, onRandomizeIndividual}) => {
+			if (expansion) {
+				return (
+				<Cell shrink>
+					<Row>
+						<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+						<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+						<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+					</Row>
+				</Cell>
+				);
+			}
+			else {
+				return null;
+			}
+		}
+	},
+
 	handlers: {
 		// Lets App know if the toggle is pressed and flips whether or not expansion material is included
 		onEnableExpansion: handle(
@@ -89,6 +117,7 @@ const MainPanel = kind({
 		activeSet,
 		cards,
 		expansion,
+		ingredientSetOptions,
 		lightModeActive,
 		onEnableExpansion,
 		onRandomizeAll,
@@ -97,6 +126,7 @@ const MainPanel = kind({
 		onSetPlayerCount,
 		onToggleTheme,
 		selectedPlayerCount,
+		witchCards,
 		...rest
 	}) => {
 		return (
@@ -104,7 +134,14 @@ const MainPanel = kind({
 				<Column>
 					<Cell shrink>
 						<Row align="center space-evenly">
-							<Cell shrink><ToggleItem iconComponent={Checkbox} onToggle={onEnableExpansion} selected={expansion}>The Herb Witches</ToggleItem></Cell>
+							<Cell shrink>
+								<Row align="center">
+									<Cell shrink component={Heading}>Expansion:</Cell>
+									<Cell shrink>
+										<ToggleItem iconComponent={Checkbox} onToggle={onEnableExpansion} selected={expansion}>The Herb Witches</ToggleItem>
+									</Cell>
+								</Row>
+							</Cell>
 							<Cell shrink>
 								<Group childComponent={RadioItem} select="radio" onSelect={onSetPlayerCount} selected={selectedPlayerCount} selectedProp="selected" itemProps={{inline: true}}>
 									{playerOpitons}
@@ -119,9 +156,9 @@ const MainPanel = kind({
 								<Column align="center space-between">
 									<Cell component={Heading} shrink>Ingredient Sets</Cell>
 									<Cell shrink style={{textAlign: 'center'}}>
-										<RangePicker min={1} max={6} value={activeSet} onChange={onSelectSet} orientation="vertical" joined width="medium" />
+										<RangePicker min={1} max={ingredientSetOptions.length} value={activeSet} onChange={onSelectSet} orientation="vertical" joined width="medium" />
 										<Group component="div" childComponent={Button} select="radio" onSelect={onSelectSet} selected={activeSet - 1} selectedProp="selected">
-											{['1', '2', '3', '4', '5', '6']}
+											{ingredientSetOptions}
 										</Group>
 									</Cell>
 									<Cell shrink>
@@ -151,13 +188,14 @@ const MainPanel = kind({
 												<Cell className={css.card}><Card name="pumpkin" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 											</Row>
 										</Cell>
-										<Cell shrink>
+										{witchCards}
+										{/* <Cell shrink>
 											<Row>
 												<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 												<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 												<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 											</Row>
-										</Cell>
+										</Cell> */}
 									</Column>
 								</Scroller>
 							</Cell>

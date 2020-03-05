@@ -4,7 +4,7 @@ import {handle, forward, adaptEvent} from '@enact/core/handle';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Changeable from '@enact/ui/Changeable';
-import {Cell, Column} from '@enact/ui/Layout';
+import {Cell, Column, Row} from '@enact/ui/Layout';
 import Heading from '@enact/moonstone/Heading';
 import BodyText from '@enact/moonstone/BodyText';
 import Skinnable from '@enact/moonstone/Skinnable';
@@ -50,11 +50,15 @@ const CardBase = kind({
 				<Cell shrink component={Heading} showLine>{title}</Cell>
 				<Cell shrink><BodyText>{topMatter[index]}</BodyText></Cell>
 				<Cell><BodyText>{descriptions[index]}</BodyText></Cell>
-				<Cell shrink><IconButton onClick={onRandomize} size="small">
-					{/* <FontAwesomeIcon icon={faDice} /> */}
-					rollforward
-				</IconButton>
-				</Cell>
+				<Row align="center">
+					<Cell shrink><IconButton onClick={onRandomize} size="small">
+						{/* <FontAwesomeIcon icon={faDice} /> */}
+						rollforward
+					</IconButton>
+					</Cell>
+					<Cell />
+					<Cell shrink>{index+1}</Cell>
+				</Row>
 			</Column>
 		);
 	}

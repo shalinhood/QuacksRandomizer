@@ -41,7 +41,7 @@ function randomizeCard (cards, expansion, selectedPlayerCount, name) {
 			newCards[name].index = selectedPlayerCount; // only 1 option for this card w/o the expansion
 		}
 	} else {
-		const max = expansion ? cards[name]['descriptions'].length : Math.max(4, cards[name]['descriptions'].length); // expansion adds cards 5 and 6
+		const max = expansion ? cards[name].descriptions.length : Math.min(4, cards[name].descriptions.length); // expansion adds cards 5 and 6
 		newCards[name].index = Math.floor(Math.random() * max);
 	}
 	return newCards;
