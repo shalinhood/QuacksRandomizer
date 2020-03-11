@@ -2,7 +2,6 @@ import kind from '@enact/core/kind';
 import {Panel} from '@enact/moonstone/Panels';
 import React from 'react';
 import PropTypes from 'prop-types';
-// import {handle, forward, adaptEvent, log} from '@enact/core/handle';
 import {handle, forward, adaptEvent} from '@enact/core/handle';
 import Group from '@enact/ui/Group';
 import {Row, Cell, Column} from '@enact/ui/Layout';
@@ -15,8 +14,7 @@ import RangePicker from '@enact/moonstone/RangePicker';
 import Checkbox from '@enact/moonstone/Checkbox';
 import SwitchItem from '@enact/moonstone/SwitchItem';
 import Scroller from '@enact/moonstone/Scroller';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faDice} from '@fortawesome/free-solid-svg-icons';
+import dice from '../icons/dice-solid.svg';
 
 import Card from '../components/Card/Card.js';
 
@@ -110,6 +108,11 @@ const MainPanel = kind({
 				({data, value}) => ({activeSet: parseInt(value || data)}),
 				forward('onSelectSet')
 			)
+		),
+
+		onGithub: handle(
+			() => (window.open('https://github.com/shalinhood/QuacksRandomizer', '_blank')),
+			forward('onGithub')
 		)
 	},
 
@@ -119,6 +122,7 @@ const MainPanel = kind({
 		expansion,
 		ingredientSetOptions,
 		lightModeActive,
+		onGithub,
 		onEnableExpansion,
 		onRandomizeAll,
 		onRandomizeIndividual,
@@ -147,6 +151,7 @@ const MainPanel = kind({
 									{playerOpitons}
 								</Group>
 							</Cell>
+							<Cell component={Button} onClick={onGithub} shrink>Github!</Cell>
 							<Cell shrink><SwitchItem onToggle={onToggleTheme} selected={lightModeActive}>Dark/Light Mode</SwitchItem></Cell>
 						</Row>
 					</Cell>
@@ -163,7 +168,7 @@ const MainPanel = kind({
 									</Cell>
 									<Cell shrink>
 										<IconButton onClick={onRandomizeAll} size="large">
-											<FontAwesomeIcon icon={faDice} />
+											{dice}
 										</IconButton>
 									</Cell>
 								</Column>
@@ -189,13 +194,6 @@ const MainPanel = kind({
 											</Row>
 										</Cell>
 										{witchCards}
-										{/* <Cell shrink>
-											<Row>
-												<Cell className={css.card}><Card name="snakeWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="owlWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="catWitch" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-											</Row>
-										</Cell> */}
 									</Column>
 								</Scroller>
 							</Cell>

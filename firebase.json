@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -10,7 +10,11 @@
       {
         "source": "**",
         "destination": "/index.html"
-      }
+	  },
+	  {
+		  "source": "/quacksrandomizer",
+		  "function": "quacksrandomizer"
+	  }
     ]
   }
 }

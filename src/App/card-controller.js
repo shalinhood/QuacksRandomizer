@@ -64,4 +64,14 @@ function changePlayerCount (cards, selectedPlayerCount) {
 	return newCards;
 }
 
-export {activateSet, randomizeCard, randomizeAllCards, changePlayerCount};
+function toggleExpansion (cards, expansion, selectedPlayerCount, setNumber) {
+	let newCards = {...cards};
+	newCards['pumpkin'].index = expansion ? 1 : 0;
+	if(setNumber > 4)
+	{
+		newCards = activateSet(newCards, selectedPlayerCount, 4);
+	}
+	return newCards;
+}
+
+export {activateSet, randomizeCard, randomizeAllCards, changePlayerCount, toggleExpansion};
