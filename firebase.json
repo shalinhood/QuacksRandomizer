@@ -1,20 +1,27 @@
 {
-  "hosting": {
-    "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-	  },
-	  {
-		  "source": "/quacksrandomizer",
-		  "function": "quacksrandomizer"
-	  }
-    ]
-  }
+	"hosting": {
+		"public": "dist",
+		"ignore": [
+			"firebase.json",
+			"**/.*",
+			"**/node_modules/**"
+		],
+		"rewrites": [
+			{
+				"source": "**",
+				"destination": "/index.html"
+			},
+			{
+				"source": "/quacksrandomizer",
+				"function": "quacksrandomizer"
+			}
+		],
+		"headers": [{
+			"source": "**/*.@(eot|otf|ttf|ttc|woff)",
+			"headers": [{
+				"key": "Access-Control-Allow-Origin",
+				"value": "*"
+			}]
+		}]
+	}
 }

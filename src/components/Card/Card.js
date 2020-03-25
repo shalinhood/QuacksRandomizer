@@ -49,7 +49,7 @@ const CardBase = kind({
 			<Column {...rest}>
 				<Cell shrink component={Heading} showLine>{title}</Cell>
 				<Cell shrink><BodyText>{topMatter[index]}</BodyText></Cell>
-				<Cell><BodyText>{descriptions[index]}</BodyText></Cell>
+				<Cell className={css.BodyText}><BodyText>{descriptions[index]}</BodyText></Cell>
 				<Row align="center">
 					<Cell shrink><IconButton onClick={onRandomize} size="small">
 						{/* <FontAwesomeIcon icon={faDice} /> */}
