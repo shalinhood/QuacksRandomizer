@@ -8,21 +8,21 @@ function activateSet (cards, selectedPlayerCount, setNumber) {
 				case 'pumpkin':
 					break;
 				case 'locoweed':
-					if (setNumber < 6) {
+					if (setNumber < 5) {
 						newCards[name].index = 0;
 					} else {
 						newCards[name].index = 1;
 					}
 					break;
 				case 'africanDeathsHeadHawkmoth':
-					if (setNumber > 4) {
-						newCards[name].index = setNumber - 3;
+					if (setNumber > 3) {
+						newCards[name].index = setNumber - 2;
 					} else {
 						newCards[name].index = selectedPlayerCount;
 					}
 					break;
 				default: // toadstool, crow skull, mandrake, garden spider, and ghost's breath
-					newCards[name].index = setNumber - 1;
+					newCards[name].index = setNumber;
 					break;
 			}
 		}
@@ -40,6 +40,8 @@ function randomizeCard (cards, expansion, selectedPlayerCount, name) {
 		} else {
 			newCards[name].index = selectedPlayerCount; // only 1 option for this card w/o the expansion
 		}
+	} else if (name === 'pumpkin') {
+		newCards[name].index = expansion ? 1 : 0;
 	} else {
 		const max = expansion ? cards[name].descriptions.length : Math.min(4, cards[name].descriptions.length); // expansion adds cards 5 and 6
 		newCards[name].index = Math.floor(Math.random() * max);
