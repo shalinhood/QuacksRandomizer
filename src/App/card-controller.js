@@ -1,4 +1,7 @@
 function activateSet (cards, selectedPlayerCount, setNumber) {
+	if (setNumber < 0) {
+		return cards;
+	}
 	let newCards = {...cards};
 	for (const name in newCards) {
 		if (name.includes('Witch')) {

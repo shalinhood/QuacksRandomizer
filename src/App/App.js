@@ -60,7 +60,7 @@ const App = kind({
 
 		onSelectSet: handle(
 			adaptEvent(
-				({activeSet}, {cards, selectedPlayerCount}) => ({cards: activateSet(cards, selectedPlayerCount, activeSet), activeSet}),
+				({activeSet}, {cards, selectedPlayerCount}) => ({cards: activateSet(cards, selectedPlayerCount, activeSet - 1), activeSet}),
 				handle(
 					forward('onSelectSet'),
 					forward('onRefreshCards')
@@ -70,7 +70,7 @@ const App = kind({
 
 		onRandomizeAll: handle(
 			adaptEvent(
-				(ev, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeAllCards(cards, selectedPlayerCount, expansion), activeSet: null}),
+				(ev, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeAllCards(cards, selectedPlayerCount, expansion), activeSet: 0}),
 				handle(
 					forward('onRefreshCards'),
 					forward('onSelectSet')
@@ -80,7 +80,7 @@ const App = kind({
 
 		onRandomizeIndividual: handle(
 			adaptEvent(
-				({name}, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeCard(cards, expansion, selectedPlayerCount, name), activeSet: null}),
+				({name}, {cards, selectedPlayerCount, expansion}) => ({cards: randomizeCard(cards, expansion, selectedPlayerCount, name), activeSet: 0}),
 				handle(
 					forward('onRefreshCards'),
 					forward('onSelectSet')

@@ -2,7 +2,7 @@ import kind from '@enact/core/kind';
 import {Panel} from '@enact/moonstone/Panels';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {handle, forward, adaptEvent, log} from '@enact/core/handle';
+import {handle, forward, adaptEvent} from '@enact/core/handle';
 import Group from '@enact/ui/Group';
 import {Row, Cell, Column} from '@enact/ui/Layout';
 import RadioItem from '@enact/moonstone/RadioItem';
@@ -114,12 +114,10 @@ const MainPanel = kind({
 
 		// Lets App know if a set is selected
 		onSelectSet: handle(
-			log('onSelectSet-before'),
 			adaptEvent(
 				// This references data and value because the two different controls wired up to this event return different event payloads, so we're just looking for both and choosing the one that isn't blank, augmenting `data` because it's the visible text, not the index.
 				({data, value}) => ({activeSet:  parseInt(data) || parseInt(value)}), // if NaN, return 0
-				handle(forward('onSelectSet'),
-				log('onSelectSet-after'))
+				forward('onSelectSet')
 			)
 		),
 
@@ -178,7 +176,7 @@ const MainPanel = kind({
 										<Picker value={activeSet} onChange={onSelectSet} orientation="vertical" joined width="medium">
 											{ingredientSetOptions}
 										</Picker>
-										<Group component="div" childComponent={Button} select="radio" onSelect={onSelectSet} selected={activeSet} selectedProp="selected">
+										<Group component="div" childComponent={Button} select="radio" onSelect={onSelectSet} selected={activeSet - 1} selectedProp="selected">
 											{ingredientSetOptions.slice(1)}
 										</Group>
 									</Cell>
