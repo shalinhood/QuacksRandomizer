@@ -73,6 +73,17 @@ const MainPanel = kind({
 			else {
 				return null;
 			}
+		},
+
+		locoweedCard: ({expansion, cards, onRandomizeIndividual}) => {
+			if (expansion) {
+				return (
+					<Cell className={css.card}><Card name="locoweed" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+				);
+			}
+			else {
+				return null;
+			}
 		}
 	},
 
@@ -122,6 +133,7 @@ const MainPanel = kind({
 		expansion,
 		ingredientSetOptions,
 		lightModeActive,
+		locoweedCard,
 		onGithub,
 		onEnableExpansion,
 		onRandomizeAll,
@@ -182,7 +194,7 @@ const MainPanel = kind({
 												<Cell className={css.card}><Card name="toadstool" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 												<Cell className={css.card}><Card name="crowSkull" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
 												<Cell className={css.card}><Card name="mandrake" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
-												<Cell className={css.card}><Card name="locoweed" cards={cards} onRandomize={onRandomizeIndividual} /></Cell>
+												{locoweedCard}
 											</Row>
 										</Cell>
 										<Cell shrink>
